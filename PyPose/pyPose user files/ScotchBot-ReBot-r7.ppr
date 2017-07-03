@@ -1,0 +1,20 @@
+ReBolt-r5:7:1024:1024:1024:1024:1024:1024:1024
+Pose=smell-+45:482, 423, 596, 699, 314, 295, 425
+Pose=pour-110:733, 719, 300, 593, 422, 664, 840
+Pose=CENTER:512, 512, 512, 512, 512, 512, 512
+Pose=smell--45:475, 434, 586, 746, 267, 191, 637
+Pose=fill-wait:212, 678, 338, 503, 513, 690, 514
+Pose=pour-0:740, 710, 308, 567, 450, 666, 513
+Pose=SLEEP:807, 240, 776, 204, 813, 531, 492
+Pose=pour-45:735, 720, 300, 598, 418, 663, 639
+Pose=simba-temp:522, 418, 601, 655, 361, 248, 514
+Pose=pre-fill:204, 653, 367, 381, 635, 795, 514
+Pose=spinnable-fill:242, 491, 529, 303, 713, 708, 512
+Pose=spinnable-near-pour:730, 524, 497, 329, 686, 697, 512
+Pose=pour-135:721, 696, 322, 602, 413, 634, 983
+Pose=spinnable-mid:517, 508, 512, 311, 704, 711, 512
+Pose=smell-0:485, 403, 617, 699, 314, 135, 510
+Seq=rebolt-5: simba-temp|5000, CENTER|5000, spinnable-fill|5000, pre-fill|5000, fill-wait|5000, pre-fill|5000, spinnable-fill|5000, spinnable-mid|5000, spinnable-near-pour|5000, pour-0|5000, pour-45|5000, pour-110|5000, pour-135|5000, pour-45|5000, pour-0|5000, spinnable-near-pour|5000, CENTER|5000
+Seq=Dance: CENTER|500, simba-temp|500, simba-temp|500, CENTER|500
+Seq=sleep: spinnable-mid|5000, SLEEP|5000
+Seq=r5-plu-smell: simba-temp|5000, CENTER|5000, spinnable-fill|5000, pre-fill|5000, fill-wait|5000, pre-fill|5000, spinnable-fill|5000, spinnable-mid|5000, smell-0|5000, smell--45|5000, smell-+45|5000, spinnable-near-pour|5000, pour-0|5000, pour-45|5000, pour-110|5000, pour-135|5000, pour-45|5000, pour-0|5000, spinnable-near-pour|5000, CENTER|5000
