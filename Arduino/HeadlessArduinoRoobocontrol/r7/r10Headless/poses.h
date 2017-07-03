@@ -1,6 +1,6 @@
 #ifndef REBOLT_R5_POSES
 #define REBOLT_R5_POSES
-#define VELOCITY 2500
+#define VELOCITY 2200
 #define SLOW_VELOCITY 5000
 
 #include <avr/pgmspace.h>
@@ -22,7 +22,7 @@ PROGMEM prog_uint16_t spinnable_mid[] = {7, 517, 508, 512, 311, 704, 711, 512};
 PROGMEM prog_uint16_t smell_0[] = {7, 485, 403, 617, 699, 314, 135, 510};
 
 // PROGMEM transition_t rebolt_5[] = {{0,17} ,{simba_temp,VELOCITY} ,{CENTER,VELOCITY} ,{spinnable_fill,SLOW_VELOCITY} ,{pre_fill,SLOW_VELOCITY} ,{fill_wait,VELOCITY} ,{pre_fill,VELOCITY} ,{spinnable_fill,VELOCITY} ,{spinnable_mid,VELOCITY} ,{spinnable_near_pour,VELOCITY} ,{pour_0,VELOCITY} ,{pour_45,VELOCITY} ,{pour_110,VELOCITY} ,{pour_135,VELOCITY} ,{pour_45,VELOCITY} ,{pour_0,VELOCITY} ,{spinnable_near_pour,VELOCITY} ,{CENTER,VELOCITY} };
-PROGMEM transition_t Dance[] = {{0,4} ,{CENTER,500} ,{simba_temp,500} ,{simba_temp,500} ,{CENTER,500} };
+PROGMEM transition_t Dance[] = {{0,4} ,{CENTER,VELOCITY} ,{simba_temp,VELOCITY} ,{simba_temp,VELOCITY} ,{CENTER,VELOCITY} };
 PROGMEM transition_t sleep[] = {{0,2} ,{spinnable_mid,SLOW_VELOCITY} ,{SLEEP,VELOCITY} };
 //PROGMEM transition_t r5_plu_smell[] = {{0,20} ,{simba_temp,VELOCITY} ,{CENTER,VELOCITY} ,{spinnable_fill,VELOCITY} ,{pre_fill,VELOCITY} ,{fill_wait,VELOCITY} ,{pre_fill,VELOCITY} ,{spinnable_fill,VELOCITY} ,{spinnable_mid,VELOCITY} ,{smell_0,VELOCITY} ,{smell_45,VELOCITY} ,{smell_PLUS45,VELOCITY} ,{spinnable_near_pour,VELOCITY} ,{pour_0,VELOCITY} ,{pour_45,VELOCITY} ,{pour_110,VELOCITY} ,{pour_135,VELOCITY} ,{pour_45,VELOCITY} ,{pour_0,VELOCITY} ,{spinnable_near_pour,VELOCITY} ,{CENTER,VELOCITY} };
 

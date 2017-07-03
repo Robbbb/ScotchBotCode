@@ -6,14 +6,15 @@
 BioloidController bioloid = BioloidController(1000000);
 
 
-#define SLEEP_ON_BOOT  0
+#define ASLEEP_ON_BOOT  0
 #define FILL_CUP  1
-#define SLEEP_FULL  2
+#define ASLEEP_FULL  2
 #define SMELL_AND_DUMP  3
-#define SLEEP_DUMPED  4
+#define ASLEEP_DUMPED  4
 #define DANCE_EMPTY  5
-#define SLEEP_DANCED  6
-#define SLEEP_FOR_BOX  7
+#define ASLEEP_DANCED  6
+#define GO_TO_BOX_SLEEP  7
+#define ASLEEP_IN_BOX 8
 
 
 //pin numbers for buttons
@@ -29,8 +30,8 @@ BioloidController bioloid = BioloidController(1000000);
 #define DEBOUNCE_INTERVAL 20 //ms to wait before listening to button press
 
 //Our Global finite state machine control variable
-uint8_t fsm_state = SLEEP_ON_BOOT;
-uint8_t next_fsm_state = SLEEP_ON_BOOT;
+uint8_t fsm_state = ASLEEP_ON_BOOT;
+uint8_t next_fsm_state = ASLEEP_ON_BOOT;
 
 
 
@@ -89,36 +90,43 @@ void loop(){
 
   switch (fsm_state)
   {
-    case SLEEP_ON_BOOT:
-      // zzzzz();
-      break;
-    case FILL_CUP:
-      if(!bioloid.playing){
-      bioloid.playSeq(toFill);}
-      break;
-    case SLEEP_FULL:
-      break;
-    case SMELL_AND_DUMP:
-        if(!bioloid.playing){
-        bioloid.playSeq(toPour);}
-      break;
-    case SLEEP_DUMPED:
-          // zzzzz();
-      break;
-    case DANCE_EMPTY:
-        if(!bioloid.playing){
-        bioloid.playSeq(Dance);}
-      break;
-    case SLEEP_DANCED:
-      break;
-    case SLEEP_FOR_BOX:
-        if(!bioloid.playing){
-// zzzzz();
-
-        bioloid.playSeq(sleep);}
-      break;
-    default:
-      break;
+  case ASLEEP_ON_BOOT:
+    break;
+  case FILL_CUP:
+    if(!bioloid.playing){
+      bioloid.playSeq(toFill);
+      fsm_state= ASLEEP_FULL;
+    }
+    break;
+  case ASLEEP_FULL:
+  
+    break;
+  case SMELL_AND_DUMP:
+    if(!bioloid.playing){
+      bioloid.playSeq(toPour);
+    }
+    fsm_state= ASLEEP_DUMPED;
+    break;
+  case ASLEEP_DUMPED:
+    break;
+  case DANCE_EMPTY:
+    if(!bioloid.playing){
+      bioloid.playSeq(Dance);
+      fsm_state= ASLEEP_DANCED;
+    }
+    break;
+  case ASLEEP_DANCED:
+    break;
+  case GO_TO_BOX_SLEEP:
+    if(!bioloid.playing){
+      bioloid.playSeq(sleep);
+      fsm_state= ASLEEP_IN_BOX;
+    }
+    break;
+  case ASLEEP_IN_BOX:
+    break;
+  default:
+    break;
 
   }
 
@@ -167,7 +175,7 @@ void updateButtons() {
       ////FILLL!!
       Serial.println("FILL");
 
-beep();
+      beep();
       fsm_state = FILL_CUP;
     }
 
@@ -199,14 +207,14 @@ beep();
     danceButtonState =danceButtonReading;
     if (danceButtonState == LOW)    {
 
-        ////DNACE!!
-        Serial.println("DANCE");
+      ////DNACE!!
+      Serial.println("DANCE");
       beep();
       beep();
       beep();
-        fsm_state = DANCE_EMPTY;
+      fsm_state = DANCE_EMPTY;
 
-  }
+    }
   }
   danceButtonStatePrev = danceButtonReading;
 
@@ -217,16 +225,15 @@ beep();
     zzzButtonState =zzzButtonReading;
     if (zzzButtonState == LOW)
     {
-    ////zzzz!!
-        Serial.println("ZZZZ");
-        fsm_state = SLEEP_FOR_BOX;
+      ////zzzz!!
+      Serial.println("ZZZZ");
+      fsm_state = GO_TO_BOX_SLEEP;
       beep();
       beep();
       beep();
       beep();
 
- 
-  }
+    }
   }
   zzzButtonStatePrev = zzzButtonReading;
 
@@ -240,5 +247,6 @@ void beep() {
   tone(BUZZER_PIN, 440, 200);
   delay(200);
 }
+
 
 
