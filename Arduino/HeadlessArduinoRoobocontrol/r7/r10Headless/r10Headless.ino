@@ -30,6 +30,8 @@ BioloidController bioloid = BioloidController(1000000);
 
 //Our Global finite state machine control variable
 uint8_t fsm_state = SLEEP_ON_BOOT;
+uint8_t next_fsm_state = SLEEP_ON_BOOT;
+
 
 
 //sure do wish the debounce library worked....
@@ -71,7 +73,7 @@ void setup(){
     bioloid.interpolateStep();
     delay(3);
   }
-  bioloid.playSeq(toFill);
+  // bioloid.playSeq(toFill);
 
   // bioloid.playSeq(r5_plu_smell);
 
@@ -85,35 +87,40 @@ void loop(){
   }
   updateButtons();
 
-  // switch (fsm_state)
-  // {
-  //   case SLEEP_ON_BOOT:
-  //     zzzzz();
-  //     break;
-  //   case FILL_CUP:
-  //     break;
-  //   case SLEEP_FULL:
-  //      zzzzz();
-  //     break;
-  //   case SMELL_AND_DUMP:
-  //     break;
-  //   case SLEEP_DUMPED:
-  //         zzzzz();
-  //     break;
-  //   case DANCE_EMPTY:
-  //       bioloid.playSeq(Dance);
-  //     break;
-  //   case SLEEP_DANCED:
-  //         zzzzz();
-  //     break;
-  //   case SLEEP_FOR_BOX:
-  //       bioloid.playSeq(sleep);
+  switch (fsm_state)
+  {
+    case SLEEP_ON_BOOT:
+      // zzzzz();
+      break;
+    case FILL_CUP:
+      if(!bioloid.playing){
+      bioloid.playSeq(toFill);}
+      break;
+    case SLEEP_FULL:
+      break;
+    case SMELL_AND_DUMP:
+        if(!bioloid.playing){
+        bioloid.playSeq(toPour);}
+      break;
+    case SLEEP_DUMPED:
+          // zzzzz();
+      break;
+    case DANCE_EMPTY:
+        if(!bioloid.playing){
+        bioloid.playSeq(Dance);}
+      break;
+    case SLEEP_DANCED:
+      break;
+    case SLEEP_FOR_BOX:
+        if(!bioloid.playing){
+// zzzzz();
 
-  //     break;
-  //   default:
-  //     break;
+        bioloid.playSeq(sleep);}
+      break;
+    default:
+      break;
 
-  // }
+  }
 
 
 
@@ -159,8 +166,7 @@ void updateButtons() {
     if (fillButtonState == LOW){
       ////FILLL!!
       Serial.println("FILL");
-            if(!bioloid.playing){
-      bioloid.playSeq(toFill);}
+
 beep();
       fsm_state = FILL_CUP;
     }
@@ -180,8 +186,6 @@ beep();
       beep();
       beep();
       fsm_state = SMELL_AND_DUMP;
-      if(!bioloid.playing){
-bioloid.playSeq(toPour);}
 
     }
   }
@@ -197,7 +201,9 @@ bioloid.playSeq(toPour);}
 
         ////DNACE!!
         Serial.println("DANCE");
-
+      beep();
+      beep();
+      beep();
         fsm_state = DANCE_EMPTY;
 
   }
@@ -214,6 +220,11 @@ bioloid.playSeq(toPour);}
     ////zzzz!!
         Serial.println("ZZZZ");
         fsm_state = SLEEP_FOR_BOX;
+      beep();
+      beep();
+      beep();
+      beep();
+
  
   }
   }

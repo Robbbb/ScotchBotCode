@@ -25,7 +25,8 @@ PROGMEM transition_t sleep[] = {{0,2} ,{spinnable_mid,5000} ,{SLEEP,5000} };
 PROGMEM transition_t r5_plu_smell[] = {{0,20} ,{simba_temp,5000} ,{CENTER,5000} ,{spinnable_fill,5000} ,{pre_fill,5000} ,{fill_wait,5000} ,{pre_fill,5000} ,{spinnable_fill,5000} ,{spinnable_mid,5000} ,{smell_0,5000} ,{smell_45,5000} ,{smell_PLUS45,5000} ,{spinnable_near_pour,5000} ,{pour_0,5000} ,{pour_45,5000} ,{pour_110,5000} ,{pour_135,5000} ,{pour_45,5000} ,{pour_0,5000} ,{spinnable_near_pour,5000} ,{CENTER,5000} };
 
 PROGMEM transition_t toFill[] = {{0,5}  ,{CENTER,5000} ,{simba_temp,5000},{spinnable_fill,5000} ,{pre_fill,5000} ,{fill_wait,5000} };
-PROGMEM transition_t toPour[] = {{0,15},{fill_wait,5000},{pre_fill,5000},{spinnable_fill,5000},{spinnable_mid,5000},{smell_0,5000},{smell_45,5000},{smell_PLUS45,5000},{spinnable_near_pour,5000},{pour_0,5000},{pour_45,5000},{pour_110,5000},{pour_135,5000},{pour_45,5000},{pour_0,5000},{spinnable_near_pour,5000},{CENTER,5000}};
+PROGMEM transition_t toPour[] = {{0,15},{fill_wait,5000},{pre_fill,5000},{spinnable_fill,5000},{spinnable_mid,5000},{smell_0,5000},{smell_45,5000},{smell_PLUS45,5000},{spinnable_near_pour,5000},{pour_0,5000},{pour_45,5000},{pour_110,5000},{pour_135,5000},{pour_45,5000},{pour_0,5000},{spinnable_near_pour,5000},{CENTER,5000}
+};
 
 #endif
 

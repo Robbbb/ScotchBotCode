@@ -104,17 +104,16 @@ void showDrink() {
   // int tickCount = 0;
   int ticksPerLurch = 9;
   int ticksPerDrink = 10;
-  int ammeterSweepPerLurch = AMMETER_DISPLAY_MAX / ticksPerDrink;
-//  int ammeterSweepPerLurch = 240 / ticksPerDrink;
+//  int ammeterSweepPerLurch = AMMETER_DISPLAY_MAX / ticksPerDrink;
+  int ammeterSweepPerLurch = 350 / ticksPerDrink;
   for (int tickCount = 0; tickCount < ticksPerDrink; ++tickCount)
   {
     mySerial.write("tickdisp 9 255");
     mySerial.write(0x0D);
     ammeterGoTo(tickCount * ammeterSweepPerLurch);
-    delay(888);
+    delay(1222);
   }
 
-ammeterGoTo(0);
 }
 
 void dispense(uint16_t ml) {

@@ -1,10 +1,3 @@
-#include <ax12.h>
-#include <BioloidController.h>
-// #include <Bounce2.h> //debounce for button
-#include "poses.h"
-
-BioloidController bioloid = BioloidController(1000000);
-
 
 #define SLEEP_ON_BOOT  0
 #define FILL_CUP  1
@@ -26,13 +19,18 @@ BioloidController bioloid = BioloidController(1000000);
 
 #define BUTTON_GND 9
 
-#define DEBOUNCE_INTERVAL 20 //ms to wait before listening to button press
+#define DEBOUNCE_INTERVAL 15 //ms to wait before listening to button press
 
 //Our Global finite state machine control variable
 uint8_t fsm_state = SLEEP_ON_BOOT;
 
+//Button objects
+// Bounce fillButton = Bounce();
+// Bounce pourButton = Bounce();
+// Bounce danceButton = Bounce();
+// Bounce zzzButton = Bounce();
 
-//sure do wish the debounce library worked....
+
 int fillButtonState = HIGH ;
 int fillButtonStatePrev = HIGH ;
 int fillButtonReading = HIGH ;
@@ -55,96 +53,25 @@ long zzzButtonLastDebounceTime = 0;
 
 
 void setup(){
+  Serial.begin(115200);
   buttonSetup();
-  beep();
-  beep();
-  beep();
-  beep();
-  beep();
-  delay(500);
-
-  delay(100);  // recommended pause
-  bioloid.loadPose(CENTER);
-  bioloid.readPose();
-  bioloid.interpolateSetup(5000);
-  while(bioloid.interpolating > 0){
-    bioloid.interpolateStep();
-    delay(3);
-  }
-  bioloid.playSeq(toFill);
-
-  // bioloid.playSeq(r5_plu_smell);
 
 
 }
 
 void loop(){
-  while(bioloid.playing){
-    updateButtons();
-    bioloid.play();
-  }
+  //timer state machine
   updateButtons();
-
-  // switch (fsm_state)
-  // {
-  //   case SLEEP_ON_BOOT:
-  //     zzzzz();
-  //     break;
-  //   case FILL_CUP:
-  //     break;
-  //   case SLEEP_FULL:
-  //      zzzzz();
-  //     break;
-  //   case SMELL_AND_DUMP:
-  //     break;
-  //   case SLEEP_DUMPED:
-  //         zzzzz();
-  //     break;
-  //   case DANCE_EMPTY:
-  //       bioloid.playSeq(Dance);
-  //     break;
-  //   case SLEEP_DANCED:
-  //         zzzzz();
-  //     break;
-  //   case SLEEP_FOR_BOX:
-  //       bioloid.playSeq(sleep);
-
-  //     break;
-  //   default:
-  //     break;
-
-  // }
-
-
-
 }
 
 
-void zzzzz() {
-  bioloid.loadPose(CENTER);
-  bioloid.readPose();
-  bioloid.interpolateSetup(5000);
-  while(bioloid.interpolating > 0){
-    bioloid.interpolateStep();
-    delay(3);
-  }
-}
-
-
-void buttonSetup() {
-
-  pinMode(FILL_BUTTON_1, INPUT);
-  digitalWrite( FILL_BUTTON_1 ,HIGH);
-  pinMode(POUR_BUTTON_2, INPUT);
-  digitalWrite( POUR_BUTTON_2 ,HIGH);
-  pinMode(DANCE_BUTTON_3, INPUT);
-  digitalWrite(  DANCE_BUTTON_3,HIGH);
-  pinMode(BOX_ZZZ_BUTTON_4, INPUT);
-  digitalWrite( BOX_ZZZ_BUTTON_4 ,HIGH);
-
-}
 
 void updateButtons() {
+
+  // fillButton.update();
+  // pourButton.update();
+  // danceButton.update();
+  // zzzButton.update();
 
   fillButtonReading = digitalRead(FILL_BUTTON_1);
   pourButtonReading = digitalRead(POUR_BUTTON_2);
@@ -159,10 +86,8 @@ void updateButtons() {
     if (fillButtonState == LOW){
       ////FILLL!!
       Serial.println("FILL");
-            if(!bioloid.playing){
-      bioloid.playSeq(toFill);}
-beep();
       fsm_state = FILL_CUP;
+      beep();
     }
 
   }
@@ -177,12 +102,9 @@ beep();
     if (pourButtonState == LOW)
     {
       Serial.println("POUR");
-      beep();
-      beep();
       fsm_state = SMELL_AND_DUMP;
-      if(!bioloid.playing){
-bioloid.playSeq(toPour);}
-
+      beep();
+      beep(); 
     }
   }
   pourButtonStatePrev = pourButtonReading;
@@ -199,7 +121,9 @@ bioloid.playSeq(toPour);}
         Serial.println("DANCE");
 
         fsm_state = DANCE_EMPTY;
-
+    beep();
+    beep();
+    beep();
   }
   }
   danceButtonStatePrev = danceButtonReading;
@@ -214,7 +138,10 @@ bioloid.playSeq(toPour);}
     ////zzzz!!
         Serial.println("ZZZZ");
         fsm_state = SLEEP_FOR_BOX;
- 
+    beep();
+    beep();
+    beep();
+    beep();
   }
   }
   zzzButtonStatePrev = zzzButtonReading;
@@ -222,12 +149,42 @@ bioloid.playSeq(toPour);}
 
 }
 
+void buttonSetup() {
+
+  // Setup the buttons with an internal pull-up :
+  // pinMode(FILL_BUTTON_1, INPUT_PULLUP);
+  // pinMode(POUR_BUTTON_2, INPUT_PULLUP);
+  // pinMode(DANCE_BUTTON_3, INPUT_PULLUP);
+  // pinMode(BOX_ZZZ_BUTTON_4, INPUT_PULLUP);
+
+  pinMode(FILL_BUTTON_1, INPUT);
+  digitalWrite( FILL_BUTTON_1 ,HIGH);
+  pinMode(POUR_BUTTON_2, INPUT);
+  digitalWrite( POUR_BUTTON_2 ,HIGH);
+  pinMode(DANCE_BUTTON_3, INPUT);
+  digitalWrite(  DANCE_BUTTON_3,HIGH);
+  pinMode(BOX_ZZZ_BUTTON_4, INPUT);
+  digitalWrite( BOX_ZZZ_BUTTON_4 ,HIGH);
+
+
+  // After setting up the button, setup the Bounce instance :
+  // fillButton.attach(FILL_BUTTON_1);
+  // fillButton.interval(DEBOUNCE_INTERVAL); // interval in ms
+  // pourButton.attach(POUR_BUTTON_2);
+  // pourButton.interval(DEBOUNCE_INTERVAL); // interval in ms
+  // danceButton.attach(DANCE_BUTTON_3);
+  // danceButton.interval(DEBOUNCE_INTERVAL); // interval in ms
+  // zzzButton.attach(BOX_ZZZ_BUTTON_4);
+  // zzzButton.interval(DEBOUNCE_INTERVAL); // interval in ms
+
+}
 
 void beep() {
   noTone(BUZZER_PIN);
   // play a note on pin 6 for 200 ms:
   tone(BUZZER_PIN, 440, 200);
-  delay(200);
+  delay(400);
+  noTone(BUZZER_PIN);
 }
 
 

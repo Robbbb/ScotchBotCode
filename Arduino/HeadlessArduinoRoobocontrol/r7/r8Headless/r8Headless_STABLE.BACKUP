@@ -71,19 +71,19 @@ void setup(){
     bioloid.interpolateStep();
     delay(3);
   }
-  bioloid.playSeq(toFill);
 
-  // bioloid.playSeq(r5_plu_smell);
+  bioloid.playSeq(r5_plu_smell);
 
 
 }
 
 void loop(){
-  while(bioloid.playing){
     updateButtons();
+    while(bioloid.playing){
+
     bioloid.play();
   }
-  updateButtons();
+  // bioloid.playSeq(toFill);
 
   // switch (fsm_state)
   // {
@@ -91,11 +91,14 @@ void loop(){
   //     zzzzz();
   //     break;
   //   case FILL_CUP:
+  //     // start our walking
+  //       bioloid.playSeq(toFill);
   //     break;
   //   case SLEEP_FULL:
   //      zzzzz();
   //     break;
   //   case SMELL_AND_DUMP:
+  //       bioloid.playSeq(toPour);
   //     break;
   //   case SLEEP_DUMPED:
   //         zzzzz();
@@ -114,7 +117,14 @@ void loop(){
   //     break;
 
   // }
-
+  // while(bioloid.playing){
+  //   //   bioloid.readPose();
+  //   //    int tempPos = bioloid.getCurPose(6);
+  //   //    if(tempPos <1){
+  //   //    Serial.println(tempPos);
+  //   //    }
+  //   bioloid.play();
+  // }
 
 
 }
@@ -159,10 +169,8 @@ void updateButtons() {
     if (fillButtonState == LOW){
       ////FILLL!!
       Serial.println("FILL");
-            if(!bioloid.playing){
-      bioloid.playSeq(toFill);}
-beep();
       fsm_state = FILL_CUP;
+      beep();
     }
 
   }
@@ -177,12 +185,9 @@ beep();
     if (pourButtonState == LOW)
     {
       Serial.println("POUR");
-      beep();
-      beep();
       fsm_state = SMELL_AND_DUMP;
-      if(!bioloid.playing){
-bioloid.playSeq(toPour);}
-
+      beep();
+      beep(); 
     }
   }
   pourButtonStatePrev = pourButtonReading;
@@ -199,7 +204,9 @@ bioloid.playSeq(toPour);}
         Serial.println("DANCE");
 
         fsm_state = DANCE_EMPTY;
-
+    beep();
+    beep();
+    beep();
   }
   }
   danceButtonStatePrev = danceButtonReading;
@@ -214,7 +221,10 @@ bioloid.playSeq(toPour);}
     ////zzzz!!
         Serial.println("ZZZZ");
         fsm_state = SLEEP_FOR_BOX;
- 
+    beep();
+    beep();
+    beep();
+    beep();
   }
   }
   zzzButtonStatePrev = zzzButtonReading;

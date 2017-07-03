@@ -8,19 +8,23 @@
 #define SLEEP_DANCED  6
 #define SLEEP_FOR_BOX  7
 
+
 //pin numbers for buttons
 #define FILL_BUTTON_1 5
 #define POUR_BUTTON_2 6
 #define DANCE_BUTTON_3 7
 #define BOX_ZZZ_BUTTON_4 8
 
+#define BUZZER_PIN 7
+
 #define BUTTON_GND 9
 
 #define DEBOUNCE_INTERVAL 20 //ms to wait before listening to button press
 
-
+//Our Global finite state machine control variable
 uint8_t fsm_state = SLEEP_ON_BOOT;
 
+//Button objects
 Bounce fillButton = Bounce();
 Bounce pourButton = Bounce();
 Bounce danceButton = Bounce();
@@ -35,83 +39,99 @@ void loop() {
   }
 
   //timer state machine
-switch (timer_fsm_state)
-{
-  case SLEEP_ON_BOOT:
-  sleep();
-    break;
-  case LED_ON_WAIT:
-    //Statements to execute every time LED_OFF_WAIT is reached
-    if(msCounts >= 1000)
+  switch (timer_fsm_state)
+  {
+    case SLEEP_ON_BOOT:
+      sleep();
+      break;
+    case LED_ON_WAIT:
+      //Statements to execute every time LED_OFF_WAIT is reached
+      if (msCounts >= 1000)
+      {
+        timer_fsm_state = LED_ON;
+        msCounts = 0;
+      }
+      break;
+    default:
+      break;
+
+  }
+  void checkRobotComs() {
+    // TODO ensure the robot is working befre continueing along animation sequence
+    int robotComsOK = 1;
+    if (robotComsOK)
     {
-      timer_fsm_state = LED_ON;
-      msCounts = 0;
+      return
     }
-    break;
-  default:
-    break;
-
-}
-void checkRobotComs(){
-	int robotComsOK = 1;
-	if (robotComsOK)
-	{
-		return
-	}
-}
-
-void updateButtons() {
-
-  fillButton.update();
-  pourButton.update();
-  danceButton.update();
-  zzzButton.update();
-
- if (fillButton.fell() ) {
-    Serial.println("fillButton Press detected");
-        fsm_state = FILL_CUP;
-  }
-  if (pourButton.fell() ) {
-    Serial.println("pourButton Press detected");
-        fsm_state = SMELL_AND_DUMP;
-  }
-   if (danceButton.fell() ) {
-    Serial.println("danceButton Press detected");
-        fsm_state = DANCE_EMPTY;
-  }
-   if (zzzButton.fell() ) {
-    Serial.println("zzzButton Press detected");
-    fsm_state = SLEEP_FOR_BOX;
   }
 
-}
+  void customRoutineAnimator() {
+    return
+  }
+  void updateButtons() {
 
-void buttonSetup() {
+    fillButton.update();
+    pourButton.update();
+    danceButton.update();
+    zzzButton.update();
 
-  // Setup the buttons with an internal pull-up :
-  pinMode(FILL_BUTTON_1, INPUT_PULLUP);
-  pinMode(POUR_BUTTON_2, INPUT_PULLUP);
-  pinMode(DANCE_BUTTON_3, INPUT_PULLUP);
-  pinMode(BOX_ZZZ_BUTTON_4, INPUT_PULLUP);
-  //Set the ground pin low for the button strip
-  pinMode(BUTTON_GND, OUTPUT);
-  digitalWrite(BUTTON_GND, LOW);
+    if (fillButton.fell() ) {
+      // TODO Implemement checks against danger conditions before changing state
+      Serial.println("fillButton Press detected");
+      fsm_state = FILL_CUP;
+      beep();
+    }
+    if (pourButton.fell() ) {
+      Serial.println("pourButton Press detected");
+      fsm_state = SMELL_AND_DUMP;
+      beep();
+    }
+    if (danceButton.fell() ) {
+      Serial.println("danceButton Press detected");
+      fsm_state = DANCE_EMPTY;
+      beep();
+    }
+    if (zzzButton.fell() ) {
+      Serial.println("zzzButton Press detected");
+      fsm_state = SLEEP_FOR_BOX;
+      beep();
+    }
+
+  }
+
+  void buttonSetup() {
+
+    // Setup the buttons with an internal pull-up :
+    pinMode(FILL_BUTTON_1, INPUT_PULLUP);
+    pinMode(POUR_BUTTON_2, INPUT_PULLUP);
+    pinMode(DANCE_BUTTON_3, INPUT_PULLUP);
+    pinMode(BOX_ZZZ_BUTTON_4, INPUT_PULLUP);
+    //Set the ground pin low for the button strip
+    pinMode(BUTTON_GND, OUTPUT);
+    digitalWrite(BUTTON_GND, LOW);
+
+    // After setting up the button, setup the Bounce instance :
+    fillButton.attach(FILL_BUTTON_1);
+    fillButton.interval(DEBOUNCE_INTERVAL); // interval in ms
+    pourButton.attach(POUR_BUTTON_2);
+    pourButton.interval(DEBOUNCE_INTERVAL); // interval in ms
+    danceButton.attach(DANCE_BUTTON_3);
+    danceButton.interval(DEBOUNCE_INTERVAL); // interval in ms
+    zzzButton.attach(BOX_ZZZ_BUTTON_4);
+    zzzButton.interval(DEBOUNCE_INTERVAL); // interval in ms
 
 
-  // After setting up the button, setup the Bounce instance :
-  fillButton.attach(FILL_BUTTON_1);
-  fillButton.interval(DEBOUNCE_INTERVAL); // interval in ms
-  pourButton.attach(POUR_BUTTON_2);
-  pourButton.interval(DEBOUNCE_INTERVAL); // interval in ms
-  danceButton.attach(DANCE_BUTTON_3);
-  danceButton.interval(DEBOUNCE_INTERVAL); // interval in ms
-  zzzButton.attach(BOX_ZZZ_BUTTON_4);
-  zzzButton.interval(DEBOUNCE_INTERVAL); // interval in ms
 
+  }
 
+  void beep() {
+    noTone(BUZZER_PIN);
+    // play a note on pin 6 for 200 ms:
+    tone(BUZZER_PIN, 440, 200);
+    delay(200);
+  }
 
-}
-void sleep(){
-	//zzzz
-	return
-}
+  void sleep() {
+    //zzzz
+    return
+  }
