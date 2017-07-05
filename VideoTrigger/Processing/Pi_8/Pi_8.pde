@@ -32,10 +32,12 @@ noCursor();
 }
 
 void mouseClicked() {
+  cursor();
   int stripeQty = 7;
   int stripeWidth = width/7;
   int stripeClicked = mouseX/stripeWidth;
   goTo(stripeClicked);
+  noCursor();
 }
 
 
