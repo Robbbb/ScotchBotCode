@@ -128,7 +128,7 @@ def checkKeyboard():
         goTo(5)
         break
 
-def goTo(int target):
+def goTo( target):
     print "state is %r" % target
     print "video is %r" % clipNames[target]
     # print "video duration is %r" % (clipEnds[target]-clipStarts[target])
