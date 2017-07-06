@@ -110,23 +110,18 @@ def checkKeyboard():
     if key == ord('1'): #ESC
         print "you pressed 1!"
         goTo(1)
-        break
     elif key == ord('2'): #Enter
         print "you pressed 2!"
         goTo(2)
-        break
     elif key == ord('3'): #Special keys (arrows, f keys, ins, del, etc.)
         print "you pressed 3!"
         goTo(3)
-        break
     elif key == ord('4'): #Special keys (arrows, f keys, ins, del, etc.)
         print "you pressed 4!"
         goTo(4)
-        break
     elif key == ord('5'): #Special keys (arrows, f keys, ins, del, etc.)
         print "you pressed 5!"
         goTo(5)
-        break
 
 def goTo( target):
     print "state is %r" % target
